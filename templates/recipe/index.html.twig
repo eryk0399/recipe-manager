@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello RecipeController!{% endblock %}
+
+{% block body %}
+
+<ul>
+{% for recipe in recipes %}
+    <li>{{ recipe.title }}</li>
+{% endfor %}
+</ul>
+
+{% endblock %}
