@@ -27,8 +27,9 @@ final class RecipeController extends AbstractController
     public function create(Request $request): Response 
     {
         $recipe = new Recipe();
+        $recipe->setInstructions(['instruction 1', 'instruction 2', 'instruction 3']);
+        
         $form = $this->createForm(RecipeFormType::class, $recipe);
-        $recipe->setInstructions(['instruction 1', 'instruction 2']);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
