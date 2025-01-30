@@ -25,12 +25,16 @@ class RecipeFormType extends AbstractType
             ])
             ->add('ingredients', CollectionType::class, [
                 'entry_type' => IngredientFormType::class,
-                'entry_options' => ['label' => false],
+                'entry_options' => ['label' => false, 'attr' => [ 'class' => 'row']],
                 'label' => false,
                 'allow_add' => true,
                 'by_reference' => false
             ])
-            ->add('save', SubmitType::class);
+            ->add('save', SubmitType::class, [
+                'attr' => [
+                    'class' => 'btn btn-lg btn-success mt-3'
+                ]
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

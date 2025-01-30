@@ -15,8 +15,16 @@ class IngredientFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class)
-            ->add('amount', TextType::class)
+            ->add('name', TextType::class, [
+                'row_attr' => [
+                    'class' => 'col-6'
+                ]
+            ])
+            ->add('amount', TextType::class, [
+               'row_attr' => [
+                    'class' => 'col-6'
+                ]
+            ])
         ;
     }
 
