@@ -26,7 +26,7 @@ class Recipe
     /**
      * @var Collection<int, Ingredient>
      */
-    #[ORM\OneToMany(targetEntity: Ingredient::class, mappedBy: 'recipe', orphanRemoval: true, fetch: 'EAGER')]
+    #[ORM\OneToMany(targetEntity: Ingredient::class, mappedBy: 'recipe', orphanRemoval: true, fetch: 'EAGER', cascade: ['persist'])]
     private Collection $ingredients;
 
     public function __construct()

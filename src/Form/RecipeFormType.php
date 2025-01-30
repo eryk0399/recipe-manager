@@ -20,7 +20,15 @@ class RecipeFormType extends AbstractType
             ->add('instructions', CollectionType::class, [
                 'entry_type' => TextareaType::class,
                 'entry_options' => ['label' => false],
+                'label' => false,
                 'allow_add' => true
+            ])
+            ->add('ingredients', CollectionType::class, [
+                'entry_type' => IngredientFormType::class,
+                'entry_options' => ['label' => false],
+                'label' => false,
+                'allow_add' => true,
+                'by_reference' => false
             ])
             ->add('save', SubmitType::class);
     }

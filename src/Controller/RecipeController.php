@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\RecipeRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 final class RecipeController extends AbstractController
@@ -24,21 +25,51 @@ final class RecipeController extends AbstractController
     }
 
     #[Route('/recipes/create', name: 'recipes_create')]
-    public function create(Request $request): Response 
+    public function create(Request $request, EntityManagerInterface $entityManager): Response 
     {
         $recipe = new Recipe();
-        $recipe->setInstructions(['instruction 1', 'instruction 2', 'instruction 3']);
-        
         $form = $this->createForm(RecipeFormType::class, $recipe);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
+            $entityManager->persist($recipe);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('recipes');
         }
 
         return $this->render('recipe/create.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    #[Route('/recipes/edit/{id}', name: 'recipes_edit')]
+    public function edit($id, Request $request, EntityManagerInterface $entityManager): Response 
+    {
+        $recipe = $this->recipeRepository->find($id);
+        $form = $this->createForm(RecipeFormType::class, $recipe);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($recipe);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('recipes');
+        }
+
+        return $this->render('recipe/edit.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    #[Route('/recipes/delete/{id}', name: 'recipes_delete')]
+    public function delete($id, EntityManagerInterface $entityManager): Response 
+    {
+        $recipe = $this->recipeRepository->find($id);
+        $entityManager->remove($recipe);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('recipes');
     }
 
     #[Route('/recipes/{id}', methods: ['GET'], name: 'recipes_show')]
